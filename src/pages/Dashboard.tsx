@@ -9,17 +9,17 @@ import "./styles.css";
 
 export function Dashboard() {
   const { createNewTask } = useTasks();
-  const [newTask, setNewTask] = useState("");
+  const [newTaskText, setNewTaskText] = useState("");
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setNewTask(event.target.value);
+    setNewTaskText(event.target.value);
   }
 
   function handleSubmitTask(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    createNewTask(newTask);
-    setNewTask("");
+    createNewTask(newTaskText);
+    setNewTaskText("");
   }
 
   return (
@@ -27,7 +27,7 @@ export function Dashboard() {
       <Header />
       <form className="newTask" onSubmit={handleSubmitTask}>
         <input
-          value={newTask}
+          value={newTaskText}
           onChange={(event) => handleChange(event)}
           type="text"
           placeholder="Add a new task"

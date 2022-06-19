@@ -13,6 +13,9 @@
 .checked {
   background: var(--gray-500);
   color: var(--gray-300);
+}
+
+.checked p {
   text-decoration: line-through;
 }
 

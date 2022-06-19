@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { TaskItem } from "../utils/types";
@@ -28,14 +28,22 @@ interface TasksProviderProps {
 
 interface TasksContextData {
   tasks: TaskItem[];
+  finishedTasksLength: number;
   createNewTask(content: string): void;
   deleteTask(id: string): void;
+  toggleTaskDone(id: string): void;
 }
 
 const TasksContext = createContext({} as TasksContextData);
 
 const TasksProvider = ({ children }: TasksProviderProps) => {
   const [tasks, setTasks] = useState(defaultTasks);
+  const [finishedTasksLength, setFinishedTasksLength] = useState(0);
+
+  useEffect(() => {
+    const finishedTasks = tasks.filter((task) => task.done);
+    setFinishedTasksLength(finishedTasks.length);
+  }, [tasks]);
 
   function createNewTask(content: string) {
     const createdTask = {
@@ -51,8 +59,27 @@ const TasksProvider = ({ children }: TasksProviderProps) => {
     setTasks(filteredTasks);
   }
 
+  function toggleTaskDone(id: string) {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return { ...task, done: !task.done };
+      }
+      return task;
+    });
+
+    setTasks(updatedTasks);
+  }
+
   return (
-    <TasksContext.Provider value={{ tasks, createNewTask, deleteTask }}>
+    <TasksContext.Provider
+      value={{
+        tasks,
+        finishedTasksLength,
+        createNewTask,
+        deleteTask,
+        toggleTaskDone,
+      }}
+    >
       {children}
     </TasksContext.Provider>
   );
