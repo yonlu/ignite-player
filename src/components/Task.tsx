@@ -25,6 +25,7 @@ export function Task({ id, content, done }: TaskProps) {
           name="task"
           checked={done}
           onChange={handleChecked}
+          size={1}
         />
         <p>{content}</p>
       </div>
